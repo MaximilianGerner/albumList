@@ -18,11 +18,7 @@
 album|type
 -|-
 id (Primary Key)|int
--|-
 name|string
--|-
 release date|date
--|-
 genres|string
--|-
 
