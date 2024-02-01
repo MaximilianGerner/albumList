@@ -15,14 +15,14 @@
 ## Database structure
 
 ### Album
-|album|type|
-+-+-+
-|id (Primary Key)|int|
-+-+-+
-|name|string|
-+-+-+
-|release date|date|
-+-+-+
-|genres|string|
-+-+-+
+album|type
+-|-
+id (Primary Key)|int
+-|-
+name|string
+-|-
+release date|date
+-|-
+genres|string
+-|-
 
