@@ -8,5 +8,5 @@
 - Sort albums by user ratings
 - Stats like in the excel
 - Recommendations (from user to user)
-- Additional 
+- Controversy
 - Ratings log
