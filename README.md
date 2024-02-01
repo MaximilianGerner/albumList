@@ -10,3 +10,19 @@
 - Recommendations (from user to user)
 - Controversy
 - Ratings log
+
+
+## Database structure
+
+### Album
+|album|type|
++-+-+
+|id (Primary Key)|int|
++-+-+
+|name|string|
++-+-+
+|release date|date|
++-+-+
+|genres|string|
++-+-+
+
