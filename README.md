@@ -41,8 +41,8 @@ name|string
 AlToAr|type
 -|-
 id (PK)|int
-artist id (FK)|id
-album id (FK)|id
+artist id (FK)|int
+album id (FK)|int
 
 
 ### Rating 
