@@ -17,8 +17,37 @@
 ### Album
 album|type
 -|-
-id (Primary Key)|int
+id (PK)|int
 name|string
 release date|date
 genres|string
 
+
+### Artist
+artist|type
+-|-
+id (PK)|int
+name|string
+
+
+### User
+user|type
+-|-
+id (PK)|int
+name|string
+
+
+### Album to Artist
+AlToAr|type
+-|-
+id (PK)|int
+artist id (FK)|id
+album id (FK)|id
+
+
+### Rating 
+rating|type
+-|-
+id (PK)|int
+user id (FK)|int
+album id (FK)|int
