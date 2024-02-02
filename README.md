@@ -21,6 +21,7 @@ id (PK)|int
 name|string
 release date|date
 genres|string
+average rating|float
 
 
 ### Artist
@@ -51,3 +52,5 @@ rating|type
 id (PK)|int
 user id (FK)|int
 album id (FK)|int
+score|float
+date of rating|date
