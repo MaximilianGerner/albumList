@@ -54,3 +54,21 @@ user id (FK)|int
 album id (FK)|int
 score|float
 date of rating|date
+
+
+### Remember
+remember|type
+-|-
+id (PK)|int
+user id (FK)|int
+album id (FK)|int
+
+
+### Recommendation
+Recommendation|type
+-|-
+id (PK)|int
+recommender id (FK)|int
+recommendee id (FK)|int
+album id (FK)|int
+
