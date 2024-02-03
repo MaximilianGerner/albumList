@@ -1,0 +1,84 @@
+<html>
+<head>
+    <title>Simple Search Bar</title>
+</head>
+<body>
+    <form id="search-form">
+        <input type="text" id="search-input" placeholder="Enter your query here">
+        <button type="submit" id="search-button">Search</button>
+    </form>
+
+    <div id="search results"></div>
+
+    <div id="edit album"></div>
+
+    <script>
+        // Get the elements from the document
+        var searchForm = document.getElementById("search-form");
+        var searchInput = document.getElementById("search-input");
+        var searchButton = document.getElementById("search-button");
+
+
+        // Add an event listener to the form submission
+        searchForm.addEventListener("submit", function(event) {
+
+
+
+            // First it should search in the database itself and only afterwards in last.fm
+
+
+
+            // Prevent the default behavior of the form
+            event.preventDefault();
+            // Get the value of the input
+            const query = encodeURI(searchInput.value);
+            // Check if the input is not empty
+            if (query) {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open( "GET", "https://ws.audioscrobbler.com/2.0/?method=album.search&limit=5&album=" + query + "&api_key=0bec9e54af5064471cae94471edf6f06&format=json", false ); // false for synchronous request
+                xmlHttp.send( null );
+
+                const jsonResponse = JSON.parse(xmlHttp.responseText);
+
+                const div = document.getElementById("search results");
+
+                div.innerHTML = "";
+
+                const ul = document.createElement('ul');
+
+                for(var i = 0; i < 5; i++){
+                    var li = document.createElement('li');
+
+                    li.setAttribute("onclick", "addAlbum('"+jsonResponse.results.albummatches.album[i].name+"', '"+jsonResponse.results.albummatches.album[i].artist+"')");
+
+
+                    const album_text = document.createTextNode(jsonResponse.results.albummatches.album[i].name + " by " + jsonResponse.results.albummatches.album[i].artist);
+
+                    const image = document.createElement("img");
+                    image.setAttribute("src", jsonResponse.results.albummatches.album[i].image[1]['#text']);
+                    image.setAttribute("onerror", "this.src='https://th.bing.com/th/id/OIP.BK3sGL5Xfo5qHg90UGZ1lAAAAA?rs=1&pid=ImgDetMain';");
+
+                    li.appendChild(image);
+                    li.appendChild(album_text);
+
+                    ul.appendChild(li);
+                }
+
+                div.appendChild(ul);
+            } else {
+                // Display a message if the input is empty
+                alert("Please enter a query");
+            }
+        });
+
+
+        function addAlbum(albumName, albumArtist){
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "GET", "https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=0bec9e54af5064471cae94471edf6f06&artist="+albumArtist+"&album="+albumName+"&format=json", false );
+            xmlHttp.send( null );
+        }
+    </script>
+</body>
+</html>
+
+
