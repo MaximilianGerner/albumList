@@ -34,6 +34,8 @@
             const query = encodeURI(searchInput.value);
             // Check if the input is not empty
             if (query) {
+                document.getElementById("edit album").innerHTML = "";
+
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open( "GET", "https://ws.audioscrobbler.com/2.0/?method=album.search&limit=5&album=" + query + "&api_key=0bec9e54af5064471cae94471edf6f06&format=json", false ); // false for synchronous request
                 xmlHttp.send( null );
@@ -73,9 +75,42 @@
 
 
         function addAlbum(albumName, albumArtist){
+            document.getElementById("search results").innerHTML = "";
+
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open( "GET", "https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=0bec9e54af5064471cae94471edf6f06&artist="+albumArtist+"&album="+albumName+"&format=json", false );
             xmlHttp.send( null );
+
+            const jsonResponse = JSON.parse(xmlHttp.responseText);
+
+            const div = document.getElementById("edit album");
+
+            const image = document.createElement("img");
+            image.setAttribute("src", jsonResponse.album.image[2]['#text']);
+            //image.setAttribute("onerror", "this.src='/home/max/projects/albumList/playground/loading.gif'");
+
+            div.appendChild(image);
+
+            const nameInput = document.createElement("input");
+
+            nameInput.setAttribute("type", "text");
+            nameInput.setAttribute("value", albumName);
+            div.appendChild(nameInput);
+
+            const artistInput = document.createElement("input");
+
+            artistInput.setAttribute("type", "text");
+            artistInput.setAttribute("value", albumArtist);
+            div.appendChild(artistInput);
+
+            
+            alert(jsonResponse.album.releasedate);
+
+            const releaseDateInput = document.createElement("input");
+
+            releaseDateInput.setAttribute("type", "date");
+            releaseDateInput.setAttribute("value", "");
+            div.appendChild(releaseDateInput);
         }
     </script>
 </body>
