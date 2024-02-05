@@ -37,7 +37,7 @@
                 document.getElementById("edit album").innerHTML = "";
 
                 var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open( "GET", "https://ws.audioscrobbler.com/2.0/?method=album.search&limit=5&album=" + query + "&api_key=0bec9e54af5064471cae94471edf6f06&format=json", false ); // false for synchronous request
+                xmlHttp.open( "GET", "https://musicbrainz.org/ws/2/release-group/?query=release:"+query+"%20AND%20primarytype:album%20OR%20primarytype:EP&limit=5&fmt=json", false ); // false for synchronous request
                 xmlHttp.send( null );
 
                 const jsonResponse = JSON.parse(xmlHttp.responseText);
@@ -51,13 +51,13 @@
                 for(var i = 0; i < 5; i++){
                     var li = document.createElement('li');
 
-                    li.setAttribute("onclick", "addAlbum('"+jsonResponse.results.albummatches.album[i].name+"', '"+jsonResponse.results.albummatches.album[i].artist+"')");
+                    //li.setAttribute("onclick", "addAlbum('"+jsonResponse.results.albummatches.album[i].name+"', '"+jsonResponse.results.albummatches.album[i].artist+"')");
 
 
-                    const album_text = document.createTextNode(jsonResponse.results.albummatches.album[i].name + " by " + jsonResponse.results.albummatches.album[i].artist);
+                    const album_text = document.createTextNode(jsonResponse["release-groups"][i].title + " by " + jsonResponse["release-groups"][i]["artist-credit"][0].name);
 
                     const image = document.createElement("img");
-                    image.setAttribute("src", jsonResponse.results.albummatches.album[i].image[1]['#text']);
+                    //image.setAttribute("src", jsonResponse.results.albummatches.album[i].image[1]['#text']);
                     image.setAttribute("onerror", "this.src='https://th.bing.com/th/id/OIP.BK3sGL5Xfo5qHg90UGZ1lAAAAA?rs=1&pid=ImgDetMain';");
 
                     li.appendChild(image);
