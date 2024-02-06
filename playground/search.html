@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <title>Simple Search Bar</title>
     <link rel="stylesheet" href="style.css">
@@ -22,7 +23,7 @@
 
         // Add an event listener to the form submission
         searchForm.addEventListener("submit", function(event) {
-
+//Test
 
 
             // First it should search in the database itself and only afterwards in last.fm
@@ -61,14 +62,14 @@
 
                     const albumTitle = document.createElement("p");
                     albumTitle.innerHTML = jsonResponse["release-groups"][i].title;
-                    albumTitle.setAttribute("class", "albumTitle");  
+                    albumTitle.setAttribute("class", "albumTitle");
 
                     li.appendChild(albumTitle);
 
                     const albumArtist = document.createElement("p");
                     albumArtist.innerHTML=jsonResponse["release-groups"][i]["artist-credit"][0].name;
                     albumArtist.setAttribute("class", "albumArtist");
-                    
+
                     li.appendChild(albumArtist);
 
                     //const album_text = document.createTextNode(jsonResponse["release-groups"][i].title + " by " + jsonResponse["release-groups"][i]["artist-credit"][0].name);
@@ -127,7 +128,7 @@
             artistInput.setAttribute("value", albumArtist);
             div.appendChild(artistInput);
 
-            
+
             alert(jsonResponse.album.releasedate);
 
             const releaseDateInput = document.createElement("input");
@@ -139,5 +140,3 @@
     </script>
 </body>
 </html>
-
-
