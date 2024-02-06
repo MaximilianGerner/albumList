@@ -42,7 +42,7 @@
                 xmlHttp.open( "GET", "https://musicbrainz.org/ws/2/release-group/?query=release:"+query+"%20AND%20primarytype:album%20OR%20primarytype:EP&limit=5&fmt=json", false ); // false for synchronous request
                 xmlHttp.send( null );
 
-                const jsonResponse = JSON.parse(xmlHttp.responseText);
+                var jsonResponse = JSON.parse(xmlHttp.responseText);
 
                 const div = document.getElementById("search results");
 
@@ -64,29 +64,40 @@
                     albumTitle.innerHTML = jsonResponse["release-groups"][i].title;
                     albumTitle.setAttribute("class", "albumTitle");
 
-                    li.appendChild(albumTitle);
+                    //li.appendChild(albumTitle);
 
                     const albumArtist = document.createElement("p");
                     albumArtist.innerHTML=jsonResponse["release-groups"][i]["artist-credit"][0].name;
                     albumArtist.setAttribute("class", "albumArtist");
 
-                    li.appendChild(albumArtist);
+                    //li.appendChild(albumArtist);
 
                     //const album_text = document.createTextNode(jsonResponse["release-groups"][i].title + " by " + jsonResponse["release-groups"][i]["artist-credit"][0].name);
 
                     const image = document.createElement("img");
 
-                    
+                    try{
                     var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open("GET", "coverartarchive.org/release/" + jsonResponse.["release-groups"][i].releases[0].id);
-                        
+                    //xmlHttp.open("GET", "coverartarchive.org/release/" + jsonResponse["release-groups"][i].releases[0].id);
+                    xmlHttp.open("GET", "https://coverartarchive.org/release/" + jsonResponse["release-groups"][i].releases[0].id, false);
+                    xmlHttp.send(null);
 
-                    //image.setAttribute("src", jsonResponse.results.albummatches.album[i].image[1]['#text']);
-                    image.setAttribute("onerror", "this.src='loading.gif';");
+                    const jsonResponse2 = JSON.parse(xmlHttp.responseText);
+
+                    image.setAttribute("src", jsonResponse2.images[0].thumbnails["250"]);
+                    }
+                  catch(err){
+                    image.setAttribute("src", "loading.gif");
+                  }
+                  finally{}
+                  image.setAttribute("onerror", "this.src='loading.gif';");
+                  image.setAttribute("width", "50px");
+                  image.setAttribute("height", "50px");
 
                     li.appendChild(image);
 
-                    //li.appendChild(album_text);
+                    li.appendChild(albumTitle);
+                    li.appendChild(albumArtist);
 
                     ul.appendChild(li);
                 }
