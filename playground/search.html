@@ -1,11 +1,12 @@
 <html>
 <head>
     <title>Simple Search Bar</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <form id="search-form">
-        <input type="text" id="search-input" placeholder="Enter your query here">
-        <button type="submit" id="search-button">Search</button>
+        <input type="text" id="search-input" placeholder="search for album">
+        <button type="submit" id="search-button"><img height=30px width=30px id="search-icon" src="search-icon.png"></button>
     </form>
 
     <div id="search results"></div>
@@ -48,20 +49,37 @@
 
                 const ul = document.createElement('ul');
 
+                ul.setAttribute("id", "searchResults");
+
                 for(var i = 0; i < 5; i++){
+
                     var li = document.createElement('li');
+
+                    li.setAttribute("class", "search-result")
 
                     //li.setAttribute("onclick", "addAlbum('"+jsonResponse.results.albummatches.album[i].name+"', '"+jsonResponse.results.albummatches.album[i].artist+"')");
 
+                    const albumTitle = document.createElement("p");
+                    albumTitle.innerHTML = jsonResponse["release-groups"][i].title;
+                    albumTitle.setAttribute("class", "albumTitle");  
 
-                    const album_text = document.createTextNode(jsonResponse["release-groups"][i].title + " by " + jsonResponse["release-groups"][i]["artist-credit"][0].name);
+                    li.appendChild(albumTitle);
+
+                    const albumArtist = document.createElement("p");
+                    albumArtist.innerHTML=jsonResponse["release-groups"][i]["artist-credit"][0].name;
+                    albumArtist.setAttribute("class", "albumArtist");
+                    
+                    li.appendChild(albumArtist);
+
+                    //const album_text = document.createTextNode(jsonResponse["release-groups"][i].title + " by " + jsonResponse["release-groups"][i]["artist-credit"][0].name);
 
                     const image = document.createElement("img");
                     //image.setAttribute("src", jsonResponse.results.albummatches.album[i].image[1]['#text']);
                     image.setAttribute("onerror", "this.src='https://th.bing.com/th/id/OIP.BK3sGL5Xfo5qHg90UGZ1lAAAAA?rs=1&pid=ImgDetMain';");
 
                     li.appendChild(image);
-                    li.appendChild(album_text);
+
+                    //li.appendChild(album_text);
 
                     ul.appendChild(li);
                 }
