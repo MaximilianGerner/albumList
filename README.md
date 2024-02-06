@@ -67,7 +67,7 @@ user id (FK)|int
 album id (FK)|int
 
 
-### Recommendation
+### Recommend
 Recommendation|type
 -|-
 id (PK)|int
