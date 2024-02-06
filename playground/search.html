@@ -74,8 +74,14 @@
                     //const album_text = document.createTextNode(jsonResponse["release-groups"][i].title + " by " + jsonResponse["release-groups"][i]["artist-credit"][0].name);
 
                     const image = document.createElement("img");
+
+                    
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open("GET", "coverartarchive.org/release/" + jsonResponse.["release-groups"][i].releases[0].id);
+                        
+
                     //image.setAttribute("src", jsonResponse.results.albummatches.album[i].image[1]['#text']);
-                    image.setAttribute("onerror", "this.src='https://th.bing.com/th/id/OIP.BK3sGL5Xfo5qHg90UGZ1lAAAAA?rs=1&pid=ImgDetMain';");
+                    image.setAttribute("onerror", "this.src='loading.gif';");
 
                     li.appendChild(image);
 
