@@ -23,6 +23,7 @@ release date|date
 genres|string
 average rating|float
 cover link|string
+user added (FK)|int
 
 
 ### Artist
