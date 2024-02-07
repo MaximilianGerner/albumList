@@ -11,6 +11,9 @@
 - Controversy
 - Ratings log
 
+## Extern Database API
+
+Spotify used for most metadata requests. Last.Fm is only used when Spotify doesn't find anything; in this case, the release date must be input manually.
 
 ## Database structure
 
