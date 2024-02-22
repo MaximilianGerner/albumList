@@ -14,6 +14,7 @@
 
     <div id="edit album"></div>
 
+
     <script>
         // Get the elements from the document
         var searchForm = document.getElementById("search-form");
@@ -76,18 +77,16 @@
 
                     const image = document.createElement("img");
 
-<<<<<<< HEAD
+
                     try{
                     var xmlHttp = new XMLHttpRequest();
                     //xmlHttp.open("GET", "coverartarchive.org/release/" + jsonResponse["release-groups"][i].releases[0].id);
                     xmlHttp.open("GET", "https://coverartarchive.org/release/" + jsonResponse["release-groups"][i].releases[0].id, false);
                     xmlHttp.send(null);
-=======
 
-                    var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open("GET", "coverartarchive.org/release/" + jsonResponse.["release-groups"][i].releases[0].id);
+                    //var xmlHttp = new XMLHttpRequest();
+                    //xmlHttp.open("GET", "coverartarchive.org/release/" + jsonResponse["release-groups"][i].releases[0].id);
 
->>>>>>> 1a058aed4fec920e4240a4bce9b3fe668c3ad6f0
 
                     const jsonResponse2 = JSON.parse(xmlHttp.responseText);
 
@@ -156,5 +155,7 @@
             div.appendChild(releaseDateInput);
         }
     </script>
+
+    <script src="database.js"></script>
 </body>
 </html>

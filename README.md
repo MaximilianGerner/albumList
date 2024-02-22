@@ -21,12 +21,12 @@ Spotify used for most metadata requests. Last.Fm is only used when Spotify doesn
 album|type
 -|-
 id (PK)|int
-name|string
+albumName|string
 release date|date
 genres|string
-average rating|float
-cover link|string
-user added|int
+averageRating|float
+coverLink|string
+userAdded|int
 controversy|int
 
 
@@ -34,47 +34,47 @@ controversy|int
 artist|type
 -|-
 id (PK)|int
-name|string
+artistName|string
 
 
 ### User
 user|type
 -|-
 id (PK)|int
-name|string
+artistName|string
 
 
 ### Album to Artist
 AlToAr|type
 -|-
 id (PK)|int
-artist id (FK)|int
-album id (FK)|int
+artistId (FK)|int
+albumId (FK)|int
 
 
 ### Rating 
 rating|type
 -|-
 id (PK)|int
-user id (FK)|int
-album id (FK)|int
+userId (FK)|int
+albumId (FK)|int
 score|float
-date of rating|date
+dateOfRating|date
 
 
 ### Remember
 remember|type
 -|-
 id (PK)|int
-user id (FK)|int
-album id (FK)|int
+userId (FK)|int
+albumId (FK)|int
 
 
 ### Recommend
 Recommendation|type
 -|-
 id (PK)|int
-recommender id (FK)|int
-recommendee id (FK)|int
-album id (FK)|int
+recommenderId (FK)|int
+recommendeeId (FK)|int
+albumId (FK)|int
 
