@@ -2,12 +2,11 @@
 
 <head>
     <title>Simple Search Bar</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <form id="search-form">
         <input type="text" id="search-input" placeholder="search for album">
-        <button type="submit" id="search-button"><img height=30px width=30px id="search-icon" src="search-icon.png"></button>
+        <button type="submit" id="search-button"><img height=30px width=30px id="search-icon"></button>
     </form>
 
     <div id="search results"></div>
@@ -16,6 +15,15 @@
 
 
     <script>
+
+
+
+
+
+
+
+
+
         // Get the elements from the document
         var searchForm = document.getElementById("search-form");
         var searchInput = document.getElementById("search-input");
@@ -23,12 +31,15 @@
 
 
         // Add an event listener to the form submission
-        searchForm.addEventListener("submit", function(event) {
+        searchForm.addEventListener("submit", async function(event) {
 
 
 
             // First it should search in the database itself and only afterwards in last.fm
 
+            let token = await fetch("http://localhost:3000/api/getAccessToken");
+
+            console.log(token);
 
 
             // Prevent the default behavior of the form
@@ -39,11 +50,11 @@
             if (query) {
                 document.getElementById("edit album").innerHTML = "";
 
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open( "GET", "https://musicbrainz.org/ws/2/release-group/?query=release:"+query+"%20AND%20primarytype:album%20OR%20primarytype:EP&limit=5&fmt=json", false ); // false for synchronous request
-                xmlHttp.send( null );
+                const response = await fetch("https://api.spotify.com/v1/search?q="+query+"&limit=5",
+                  {method: 'GET', headers: (new Headers()).append('Authorization', 'Bearer ' + token)}); 
+                console.log(response);
 
-                var jsonResponse = JSON.parse(xmlHttp.responseText);
+                var jsonResponse = JSON.parse(response);
 
                 const div = document.getElementById("search results");
 
@@ -71,32 +82,9 @@
                     albumArtist.innerHTML=jsonResponse["release-groups"][i]["artist-credit"][0].name;
                     albumArtist.setAttribute("class", "albumArtist");
 
-                    //li.appendChild(albumArtist);
-
-                    //const album_text = document.createTextNode(jsonResponse["release-groups"][i].title + " by " + jsonResponse["release-groups"][i]["artist-credit"][0].name);
-
-                    const image = document.createElement("img");
-
-
-                    try{
-                    var xmlHttp = new XMLHttpRequest();
-                    //xmlHttp.open("GET", "coverartarchive.org/release/" + jsonResponse["release-groups"][i].releases[0].id);
-                    xmlHttp.open("GET", "https://coverartarchive.org/release/" + jsonResponse["release-groups"][i].releases[0].id, false);
-                    xmlHttp.send(null);
-
-                    //var xmlHttp = new XMLHttpRequest();
-                    //xmlHttp.open("GET", "coverartarchive.org/release/" + jsonResponse["release-groups"][i].releases[0].id);
-
-
-                    const jsonResponse2 = JSON.parse(xmlHttp.responseText);
-
-                    image.setAttribute("src", jsonResponse2.images[0].thumbnails["250"]);
                     }
-                  catch(err){
-                    image.setAttribute("src", "loading.gif");
-                  }
-                  finally{}
-                  image.setAttribute("onerror", "this.src='loading.gif';");
+
+                  //image.setAttribute("onerror", "this.src='loading.gif';");
                   image.setAttribute("width", "50px");
                   image.setAttribute("height", "50px");
 
@@ -106,7 +94,7 @@
                     li.appendChild(albumArtist);
 
                     ul.appendChild(li);
-                }
+
 
                 div.appendChild(ul);
             } else {
@@ -115,7 +103,7 @@
             }
         });
 
-
+/*
         function addAlbum(albumName, albumArtist){
             document.getElementById("search results").innerHTML = "";
 
@@ -146,8 +134,7 @@
             releaseDateInput.setAttribute("value", "");
             div.appendChild(releaseDateInput);
         }
+        */
     </script>
-
-    <script src="database.js"></script>
 </body>
 </html>

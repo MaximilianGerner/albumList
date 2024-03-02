@@ -11,6 +11,9 @@
 - Controversy
 - Ratings log
 
+## Server
+REST-API using Node.js and express serving data as JSON.
+
 ## Extern Database API
 
 Spotify used for most metadata requests. Last.Fm is only used when Spotify doesn't find anything; in this case, the release date must be input manually.
