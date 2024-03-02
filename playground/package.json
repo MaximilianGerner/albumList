@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "mariadb": "^3.2.3",
-    "mysql2": "^3.9.1"
-  }
-}

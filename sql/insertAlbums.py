@@ -41,6 +41,8 @@ except mariadb.Error as e:
 # Get Cursor
 cur = conn.cursor()
 
+amOfAlbums = 1975;
+
 with open('data.tsv', mode='r') as file:
     csvFile = csv.reader(file, delimiter="\t")
 
@@ -60,7 +62,7 @@ with open('data.tsv', mode='r') as file:
 
     for i, line in enumerate(csvFile):
         if i != 0:
-            if i > 1961:
+            if i > amOfAlbums:
                 break
 
             if line[22] == "-":
@@ -89,7 +91,7 @@ with open('data.tsv', mode='r') as file:
 
         if i != 0:
 
-            if i > 1961:
+            if i > amOfAlbums:
                 break
 
             for j in range(8):
@@ -126,10 +128,10 @@ with open('data.tsv', mode='r') as file:
     csvFile = csv.reader(file, delimiter="\t")
 
     for i, line in enumerate(csvFile):
-        if i == 0:
+        if i == 0: 
             continue
 
-        elif i > 1961:
+        elif i > amOfAlbums:
             break
 
         artists = line[31].split("\\")

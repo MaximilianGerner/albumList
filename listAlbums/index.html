@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Basic HTML Template</title>
+</head>
+<body>
+
+
+  <select id="orderBy">
+    <option value="averageRating">Fair Average</option>
+    <option value="releaseDate">Release Date</option>
+    <option value="albumName">Album Name</option>
+    <option value="artists">Artist Name</option>
+    <option value="controversy">Controversy</option>
+  </select>
+
+  <select id="orderDir">
+    <option value="ASC">Ascending</option>
+    <option value="DESC">Descending</option>
+  </select>
+
+  <input id="inputResults" type="number" value="25">
+
+  <button onclick="previousPage()"><</button>
+  <button onclick="nextPage()">></button>
+  <button onclick="getResults()">Apply</button>
+
+<ul id="data"></ul>
+
+
+<script>
+  // Define the URL of your server endpoint that returns JSON data
+  const url = "http://localhost:3000/api/data";
+
+  var page = 0;
+
+  getResults();
+
+
+
+
+  function getResults(){
+
+
+  let results = document.getElementById("inputResults").value;
+    console.log(results);
+
+  // Use the fetch API to make a GET request to the URL
+  fetch(url + "?page=" + page + "&results=" + results + "&orderBy=" + document.getElementById("orderBy").value + "&orderDir=" + document.getElementById("orderDir").value)
+    .then(response => response.json()) // Parse the response as JSON
+    .then(data => {
+      // Do something with the data, such as displaying it on the page
+      console.log(data); // For debugging purposes
+      let ul = document.getElementById("data");
+
+      ul.innerHTML = "";
+
+      for(let i = 0; i < Object.keys(data).length; i++){
+        let li = document.createElement("li");
+
+        let albumName = document.createElement("h3");
+        albumName.innerHTML = data[i].albumName;
+        li.appendChild(albumName);
+
+        let artistName = document.createElement("h4");
+        artistName.innerHTML = data[i].artists;
+        li.appendChild(artistName);
+
+        let averageRating = document.createElement("p");
+        if(data[i].averageRating){
+          averageRating.innerHTML = data[i].averageRating;
+        }
+        else{
+          averageRating.innerHTML = "-";
+        }
+        li.appendChild(averageRating);
+
+        let coverImg = document.createElement("img");
+        coverImg.setAttribute("src", data[i].coverLink);
+        li.appendChild(coverImg);
+
+        ul.append(li);
+      }
+    })
+    .catch(error => {
+      // Handle any errors, such as network or server issues
+      console.error(error);
+      alert("An error ocurred!");
+    });
+  }
+
+
+
+
+    function nextPage(){
+      page++;
+      getResults();
+    }
+
+    function previousPage(){
+      if(page > 0){
+        page--;
+        getResults();
+      }
+    }
+</script>
+</body>
+</html>
+
+
+
+
