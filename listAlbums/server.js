@@ -19,7 +19,7 @@ const app = express();
 // Set the port number
 const port = 3000;
 
-
+app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   // Send the HTML file as a response
