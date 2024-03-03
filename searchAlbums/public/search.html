@@ -2,11 +2,12 @@
 
 <head>
     <title>Simple Search Bar</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <form id="search-form">
         <input type="text" id="search-input" placeholder="search for album">
-        <button type="submit" id="search-button"><img height=30px width=30px id="search-icon"></button>
+        <button type="submit" id="search-button"><img src="search-icon.png" height=30px width=30px id="search-icon"></button>
     </form>
 
     <div id="search results"></div>
@@ -24,32 +25,24 @@
 
         // Add an event listener to the form submission
         searchForm.addEventListener("submit", async function(event) {
-          
 
+           event.preventDefault();
 
-            // First it should search in the database itself and only afterwards in last.fm
-
-          let token = await fetch("http://localhost:3000/api/getAccessToken");
-
-          console.log(token);
-
-
-          // Prevent the default behavior of the form
-          event.preventDefault();
           // Get the value of the input
           const query = encodeURI(searchInput.value);
           // Check if the input is not empty
           if (query) {
-            document.getElementById("edit album").innerHTML = "";
 
-            const response = fetch("https://api.spotify.com/v1/search?q="+query+"&limit=5",
+          document.getElementById("edit album").innerHTML = "";
+
+
+
+          fetch("http://localhost:3000/api/getAccessToken").then(response => response.text()).then(function(token){fetch("https://api.spotify.com/v1/search?q="+query+"&type=album&limit=5",
               {method: 'GET', headers: {
-                "content-type": "application/json",
+                "Content-Type": "application/json",
                 "Authorization": "Bearer " + token
-              }}).then();
-            console.log(response);
+              }}).then(response => response.json()).then(function(json){
 
-            var jsonResponse = JSON.parse(response);
 
             const div = document.getElementById("search results");
 
@@ -67,18 +60,21 @@
               //li.setAttribute("onclick", "addAlbum('"+jsonResponse.results.albummatches.album[i].name+"', '"+jsonResponse.results.albummatches.album[i].artist+"')");
 
               const albumTitle = document.createElement("p");
-              albumTitle.innerHTML = jsonResponse["release-groups"][i].title;
+              albumTitle.innerHTML = json.albums.items[i].name;
               albumTitle.setAttribute("class", "albumTitle");
 
-              //li.appendChild(albumTitle);
+              li.appendChild(albumTitle);
 
               const albumArtist = document.createElement("p");
-              albumArtist.innerHTML=jsonResponse["release-groups"][i]["artist-credit"][0].name;
+              albumArtist.innerHTML=json.albums.items[i].artists[0].name;
               albumArtist.setAttribute("class", "albumArtist");
 
-            }
+              li.appendChild(albumArtist);
 
-            //image.setAttribute("onerror", "this.src='loading.gif';");
+              const image = document.createElement("img");
+
+            image.setAttribute("onerror", "this.src='loading.gif';");
+            image.setAttribute("src", json.albums.items[i].images[1].url);
             image.setAttribute("width", "50px");
             image.setAttribute("height", "50px");
 
@@ -89,13 +85,15 @@
 
             ul.appendChild(li);
 
+            }
 
             div.appendChild(ul);
+            })});
           } else {
             // Display a message if the input is empty
             alert("Please enter a query");
           }
-        });
+          });
 
 /*
         function addAlbum(albumName, albumArtist){

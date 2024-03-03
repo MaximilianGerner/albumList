@@ -11,10 +11,12 @@ const client = Client.create({
   },
 });
 
+app.use(express.static("public"));
+
 
 app.get("/", async (req, res) => {
   try {
-    res.sendFile("search.html", {root: __dirname});
+    res.sendFile("public/search.html", {root: __dirname});
 
 
 } catch (error) {
