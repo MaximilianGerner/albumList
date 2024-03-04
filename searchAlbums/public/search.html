@@ -1,132 +1,273 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <title>Simple Search Bar</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width">
+    <meta charset="utf-8">
 </head>
 <body>
-    <form id="search-form">
-        <input type="text" id="search-input" placeholder="search for album">
-        <button type="submit" id="search-button"><img src="search-icon.png" height=30px width=30px id="search-icon"></button>
-    </form>
+<form id="search-form">
+    <input type="text" id="search-input" placeholder="search for album">
+    <button type="button" onclick="searchAlbums()" id="search-button"><img src="search-icon.png" height=30px width=30px
+                                                                           id="search-icon" alt="Album cover art">
+    </button>
+</form>
 
-    <div id="search results"></div>
+<div id="resultWindow"></div>
 
-    <div id="edit album"></div>
-
-
-    <script>
-
-        // Get the elements from the document
-        var searchForm = document.getElementById("search-form");
-        var searchInput = document.getElementById("search-input");
-        var searchButton = document.getElementById("search-button");
+<div id="edit album"></div>
 
 
-        // Add an event listener to the form submission
-        searchForm.addEventListener("submit", async function(event) {
+<script>
 
-           event.preventDefault();
-
-          // Get the value of the input
-          const query = encodeURI(searchInput.value);
-          // Check if the input is not empty
-          if (query) {
-
-          document.getElementById("edit album").innerHTML = "";
+    // Get the elements from the document
+    var searchForm = document.getElementById("search-form");
+    var searchInput = document.getElementById("search-input");
 
 
+    // Add an event listener to the form submission
+    function searchAlbums() {
 
-          fetch("http://localhost:3000/api/getAccessToken").then(response => response.text()).then(function(token){fetch("https://api.spotify.com/v1/search?q="+query+"&type=album&limit=5",
-              {method: 'GET', headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
-              }}).then(response => response.json()).then(function(json){
+        // Get the value of the input
+        const query = encodeURI(searchInput.value);
+        // Check if the input is not empty
+        if (query) {
 
 
-            const div = document.getElementById("search results");
+            document.getElementById("edit album").innerHTML = "";
 
+            const div = document.getElementById("resultWindow");
             div.innerHTML = "";
 
             const ul = document.createElement('ul');
 
             ul.setAttribute("id", "searchResults");
 
-            for(var i = 0; i < 5; i++){
-
-              var li = document.createElement('li');
-              li.setAttribute("class", "search-result")
-
-              //li.setAttribute("onclick", "addAlbum('"+jsonResponse.results.albummatches.album[i].name+"', '"+jsonResponse.results.albummatches.album[i].artist+"')");
-
-              const albumTitle = document.createElement("p");
-              albumTitle.innerHTML = json.albums.items[i].name;
-              albumTitle.setAttribute("class", "albumTitle");
-
-              li.appendChild(albumTitle);
-
-              const albumArtist = document.createElement("p");
-              albumArtist.innerHTML=json.albums.items[i].artists[0].name;
-              albumArtist.setAttribute("class", "albumArtist");
-
-              li.appendChild(albumArtist);
-
-              const image = document.createElement("img");
-
-            image.setAttribute("onerror", "this.src='loading.gif';");
-            image.setAttribute("src", json.albums.items[i].images[1].url);
-            image.setAttribute("width", "50px");
-            image.setAttribute("height", "50px");
-
-            li.appendChild(image);
-
-            li.appendChild(albumTitle);
-            li.appendChild(albumArtist);
-
-            ul.appendChild(li);
-
-            }
+            appendMoreResults(query, 0);
+            /*
+            
+                        fetch("http://localhost:3000/api/getAccessToken").then(response => response.text()).then(function (token) {
+                            fetch("https://api.spotify.com/v1/search?q=" + query + "&type=album&limit=5",
+                                {
+                                    method: 'GET', headers: {
+                                        "Content-Type": "application/json",
+                                        "Authorization": "Bearer " + token
+                                    }
+                                }).then(response => response.json()).then(function (json) {
+            
+            
+            
+            
+                                for (var i = 0; i < 5; i++) {
+            
+                                    var li = document.createElement('li');
+                                    li.setAttribute("class", "search-result")
+            
+                                    li.setAttribute("onclick",
+                                        "addAlbum('" + json.albums.items[i].id + "')");
+            
+                                    const albumTitle = document.createElement("p");
+                                    albumTitle.innerHTML = json.albums.items[i].name;
+                                    albumTitle.setAttribute("class", "albumTitle");
+            
+                                    li.appendChild(albumTitle);
+            
+                                    const albumArtist = document.createElement("p");
+                                    albumArtist.innerHTML = json.albums.items[i].artists[0].name;
+                                    albumArtist.setAttribute("class", "albumArtist");
+            
+                                    li.appendChild(albumArtist);
+            
+                                    const image = document.createElement("img");
+            
+                                    image.setAttribute("onerror", "this.src='loading.gif';");
+                                    image.setAttribute("src", json.albums.items[i].images[1].url);
+                                    image.setAttribute("width", "50px");
+                                    image.setAttribute("height", "50px");
+            
+                                    li.appendChild(image);
+            
+                                    li.appendChild(albumTitle);
+                                    li.appendChild(albumArtist);
+            
+                                    ul.appendChild(li);
+            
+                                }
+                                
+                                
+            
+            
+                                d
+            
+            
+            
+            
+                            })
+            
+            
+            
+                        }).catch((err) => {
+                            alert(err);
+                        }).catch((err) => {
+                            alert(err);
+                        });
+                        */
+        
 
             div.appendChild(ul);
-            })});
-          } else {
+
+
+            let moreBut = document.createElement("p");
+            moreBut.setAttribute("onclick", "appendMoreResults('" + query + "', 1)");
+            moreBut.setAttribute("id", "moreBut");
+            moreBut.innerHTML = "+";
+            div.appendChild(moreBut);
+
+
+        } else {
             // Display a message if the input is empty
             alert("Please enter a query");
-          }
-          });
-
-/*
-        function addAlbum(albumName, albumArtist){
-            document.getElementById("search results").innerHTML = "";
-
-            const jsonResponse = JSON.parse(xmlHttp.responseText);
-
-            const div = document.getElementById("edit album");
-
-            div.appendChild(image);
-
-            const nameInput = document.createElement("input");
-
-            nameInput.setAttribute("type", "text");
-            nameInput.setAttribute("value", albumName);
-            div.appendChild(nameInput);
-
-            const artistInput = document.createElement("input");
-
-            artistInput.setAttribute("type", "text");
-            artistInput.setAttribute("value", albumArtist);
-            div.appendChild(artistInput);
-
-
-            alert(jsonResponse.album.releasedate);
-
-            const releaseDateInput = document.createElement("input");
-
-            releaseDateInput.setAttribute("type", "date");
-            releaseDateInput.setAttribute("value", "");
-            div.appendChild(releaseDateInput);
         }
-        */
-    </script>
+    }
+
+    function appendMoreResults(query, searchPage) {
+
+        fetch("http://localhost:3000/api/getAccessToken").then(response => response.text()).then(function (token) {
+            fetch("https://api.spotify.com/v1/search?q=" + query + "&type=album&offset=" + 5 * searchPage + "&limit=5",
+                {
+                    method: 'GET', headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    }
+                }).then(response => response.json()).then(function (json) {
+
+                console.log(json);
+
+                const ul = document.getElementById('searchResults');
+
+                for (var i = 0; i < Object.keys(json.albums.items).length; i++) {
+
+                    var li = document.createElement('li');
+                    li.setAttribute("class", "search-result")
+
+                    li.setAttribute("onclick", "addAlbum('" + json.albums.items[i].id + "')");
+
+                    const albumTitle = document.createElement("p");
+                    albumTitle.innerHTML = json.albums.items[i].name;
+                    albumTitle.setAttribute("class", "albumTitle");
+
+                    li.appendChild(albumTitle);
+
+                    const albumArtist = document.createElement("p");
+                    albumArtist.innerHTML = json.albums.items[i].artists[0].name;
+                    albumArtist.setAttribute("class", "albumArtist");
+
+                    li.appendChild(albumArtist);
+
+                    const image = document.createElement("img");
+
+                    image.setAttribute("onerror", "this.src='loading.gif';");
+                    image.setAttribute("src", json.albums.items[i].images[1].url);
+                    image.setAttribute("width", "50px");
+                    image.setAttribute("height", "50px");
+
+                    li.appendChild(image);
+
+                    li.appendChild(albumTitle);
+                    li.appendChild(albumArtist);
+
+                    ul.appendChild(li);
+
+                }
+
+                let moreBut = document.getElementById("moreBut");
+                moreBut.setAttribute("onclick", "appendMoreResults('" + query + "', " + (searchPage + 1) + ")");
+
+            })
+        })
+    }
+
+
+    function addAlbum(id) {
+        document.getElementById("resultWindow").innerHTML = "";
+
+        const div = document.getElementById("edit album");
+
+        fetch("http://localhost:3000/api/getAccessToken").then(response => response.text()).then(function (token) {
+            fetch("https://api.spotify.com/v1/albums/" + id,
+                {
+                    method: 'GET', headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    }
+                }).then(response => response.json()).then(function (json) {
+
+
+                const image = document.createElement("img");
+                image.setAttribute("src", json.images[1].url);
+                div.appendChild(image);
+
+
+                const nameInput = document.createElement("input");
+                nameInput.setAttribute("type", "text");
+                nameInput.setAttribute("value", json.name);
+                div.appendChild(nameInput);
+
+
+                const artistsUl = document.createElement("ul");
+                for (let i = 0; i < json.artists.length; i++) {
+                    let artistInput = document.createElement("input");
+                    artistInput.setAttribute("type", "text");
+                    artistInput.setAttribute("value", json.artists[i].name);
+                    artistsUl.appendChild(artistInput);
+                }
+                div.appendChild(artistsUl);
+
+
+                const releaseDateInput = document.createElement("input");
+                releaseDateInput.setAttribute("type", "date");
+                releaseDateInput.setAttribute("value", json["release_date"]);
+                div.appendChild(releaseDateInput);
+
+
+                const ratingInput = document.createElement("input");
+                ratingInput.setAttribute("type", "number");
+                ratingInput.setAttribute("step", "0.1");
+                div.appendChild(ratingInput);
+
+
+                fetch("http://localhost:3000/api/getAccessToken").then(response => response.text()).then(function (token) {
+                    fetch("https://api.spotify.com/v1/artists/" + json.artists[0].id,
+                        {
+                            method: 'GET', headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": "Bearer " + token
+                            }
+                        }).then(response => response.json()).then(function (json) {
+
+                        let genres = json.genres[0];
+
+                        for (let i = 1; i < json.genres.length; i++) {
+                            genres += ", " + json.genres[i];
+                        }
+
+                        const genresInput = document.createElement("input");
+                        genresInput.setAttribute("type", "text");
+                        genresInput.setAttribute("value", genres);
+                        div.appendChild(genresInput);
+
+
+                    })
+                });
+            })
+        });
+
+
+    }
+
+
+</script>
 </body>
 </html>
