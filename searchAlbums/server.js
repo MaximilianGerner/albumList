@@ -15,8 +15,8 @@ const client = Client.create({
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
     host: 'localhost',
-    user:'root',
-    password: 'password',
+    user: 'root',
+    password: '4567',
     connectionLimit: 5,
     database: 'AlbumListPlayground'
 });
@@ -52,32 +52,55 @@ app.get("/api/getAccessToken", async (req, res) => {
 });
 
 app.post("/api/insertAlbum", (req, res) => {
+
+    // Create some JSON data
+    const response = insertAlbum(req.body.albumName, req.body.releaseDate, req.body.genres, req.body.coverLink, req.body.userId, req.body.rating);
+
+    response.then(data => console.log(data));
+
+    response.then(function (response) {
+        res.setHeader("Content-Type", "text/plain");
+        // Send the data as a JSON string
+        res.send("hi");
+    })
+});
+
+async function insertAlbum(albumName, releaseDate, genres, coverLink, userId, rating) {
     try {
-        console.log(req.body);
+
+        let sql = "INSERT INTO album (albumName, releaseDate, genres, coverLink, userAdded, controversy) " +
+            "VALUES ('" + albumName + "', '" + releaseDate + "', '" + genres + "', '" + coverLink + "', '" + userId + "', NULL);";
 
 
-        try {
+        await conn.then(async function (conn) {
+            return await conn.query(sql)
+        });
 
-            let sql = "(SELECT album.id, albumName, GROUP_CONCAT(artistName SEPARATOR ', ') AS artists, coverLink, averageRating " +
-                "FROM album JOIN albumToArtist ON album.id = albumId " +
-                "JOIN artist ON artist.id = artistId " +
-                "GROUP BY albumId ORDER BY releaseDate) ORDER BY " + orderBy + " " + orderDir + " LIMIT " + (page * results) + ", " + results + ";"
 
-            return await conn.then(function (conn) {
-                return conn.query(sql)
+        if (rating) {
+
+            let sql = "INSERT INTO rating (userId, albumId, score, dateOfRating) " +
+                "VALUES (" + userId + ", LAST_INSERT_ID(), " + rating + ", '" + (new Date()).toISOString().split('T')[0] + "');";
+
+            console.log(sql);
+
+            await conn.then(async function (conn) {
+                return await conn.query(sql)
             });
-
-        } catch (err) {
-            console.log(err);
-            return null;
         }
+
+        return "all fine!";
 
     } catch (err) {
         console.log(err);
+        return null;
     }
-});
+}
 
 // Start the server on port 3000
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
+
+
+

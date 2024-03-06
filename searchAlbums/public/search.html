@@ -76,8 +76,7 @@
 
                     image.setAttribute("onerror", "this.src='loading.gif';");
                     image.setAttribute("src", json.albums.items[i].images[1].url);
-                    image.setAttribute("width", "50px");
-                    image.setAttribute("height", "50px");
+                    image.setAttribute("width", "40%");
 
                     li.appendChild(image);
 
@@ -144,15 +143,15 @@
                         "Authorization": "Bearer " + token
                     }
                 }).then(response => response.json()).then(function (json) {
-                    
-                    
+
+
                 const coverArtInput = document.createElement("input");
                 coverArtInput.setAttribute("name", "coverArtInput");
                 coverArtInput.setAttribute("value", json.images[1].url);
-                coverArtInput.setAttribute("onchange", 
+                coverArtInput.setAttribute("onchange",
                     "document.getElementById('coverArt').setAttribute('src', this.value)");
                 form.appendChild(coverArtInput);
-                
+
                 const coverArt = document.createElement("img");
                 coverArt.setAttribute("id", "coverArt");
                 coverArt.setAttribute("src", json.images[1].url);
@@ -244,7 +243,7 @@
 
         document.querySelector("form").addEventListener("submit", function (event) {
             event.preventDefault();
-            
+
 
             fetch("http://localhost:3000/api/insertAlbum", {
                 method: "POST",
@@ -261,12 +260,15 @@
                 }
             })
                 //.then((response) => response.json())
-                .then((json) => console.log(json)).catch((err) => alert("Couldn't upload album! (" + err + ")"));
-            
+                .then(function (json) {
+                    console.log(json);
+                    document.getElementById("editAlbum").innerHTML = "";
+                    document.getElementById("search-input").setAttribute("value", "");
+                }).catch((err) => alert("Couldn't upload album! (" + err + ")"));
+
             document.getElementById("editAlbum").innerHTML = "";
             document.getElementById("search-input").setAttribute("value", "");
             
-
         });
 
 
