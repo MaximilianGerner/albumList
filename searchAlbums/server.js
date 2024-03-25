@@ -51,49 +51,81 @@ app.get("/api/getAccessToken", async (req, res) => {
     }
 });
 
-app.post("/api/insertAlbum", (req, res) => {
+app.post("/api/insertAlbum", async (req, res) => {
 
     // Create some JSON data
-    const response = insertAlbum(req.body.albumName, req.body.releaseDate, req.body.genres, req.body.coverLink, req.body.userId, req.body.rating);
+    let response = insertAlbum(req.body);
 
-    response.then(data => console.log(data));
 
     response.then(function (response) {
+        console.log(response)
         res.setHeader("Content-Type", "text/plain");
-        // Send the data as a JSON string
-        res.send("hi");
-    })
+        res.send(response);
+    });
 });
 
-async function insertAlbum(albumName, releaseDate, genres, coverLink, userId, rating) {
+async function insertAlbum(json) {
+    
     try {
-
+        
+        // Album
+        
         let sql = "INSERT INTO album (albumName, releaseDate, genres, coverLink, userAdded, controversy) " +
-            "VALUES ('" + albumName + "', '" + releaseDate + "', '" + genres + "', '" + coverLink + "', '" + userId + "', NULL);";
+            "VALUES ('" + json.albumName + "', '" + json.releaseDate + "', '" + json.genres + "', '" + json.coverLink 
+            + "', '" + json.userId + "', NULL);";
 
 
         await conn.then(async function (conn) {
-            return await conn.query(sql)
+            return await conn.query(sql, {title: 'title'}, function (error, results, fields){
+                const albumId = results.insertId;
+
+                // Rating
+
+                if (json.rating) {
+                    let sql = "INSERT INTO rating (userId, albumId, score, dateOfRating) " +
+                        "VALUES (" + json.userId + ", " + albumId + ", " + json.rating + ", '" + (new Date()).toISOString().split('T')[0] + "');";
+                    
+
+                    conn.then(function (conn) {
+                        return conn.query(sql);
+                    });
+                }
+
+
+
+
+
+                // Artists
+
+                for (let i = 0; i < Object.keys(json.artists).length; i++) {
+                    let sql = "SELECT artistName, id FROM artist WHERE artistName = '" + json.artists[i] + "';";
+
+                    let select = await conn.then(function (conn) {
+                        return conn.query(sql)
+                    });
+
+                    console.log(select);
+                    if (select.length == 0) {
+                        let sql = "INSERT artistName FROM artist WHERE artistName = '" + json.artists[i] + "';";
+        
+                        let select = await conn.then(function (conn) {
+                            return conn.query(sql)
+                        });
+                    }
+                }
+                
+                
+            })
         });
+        
 
-
-        if (rating) {
-
-            let sql = "INSERT INTO rating (userId, albumId, score, dateOfRating) " +
-                "VALUES (" + userId + ", LAST_INSERT_ID(), " + rating + ", '" + (new Date()).toISOString().split('T')[0] + "');";
-
-            console.log(sql);
-
-            await conn.then(async function (conn) {
-                return await conn.query(sql)
-            });
-        }
-
-        return "all fine!";
+        return "400";
 
     } catch (err) {
+        
         console.log(err);
-        return null;
+        return "401";
+        
     }
 }
 
