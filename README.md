@@ -44,7 +44,7 @@ artistName|string
 user|type
 -|-
 id (PK)|int
-artistName|string
+userName|string
 
 
 ### Album to Artist
