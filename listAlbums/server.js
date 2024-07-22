@@ -7,7 +7,7 @@ const pool = mariadb.createPool({
     user: 'root',
     password: '4567',
     connectionLimit: 5,
-    database: 'AlbumListPlayground'
+    database: 'AlbumList'
 });
 
 const conn = pool.getConnection();
@@ -23,7 +23,7 @@ app.use(express.static("public"));
 
 app.get("/", (req, res) => {
     // Send the HTML file as a response
-    res.sendFile("index.html", {root: __dirname});
+    res.sendFile("public/index.html", {root: __dirname});
 });
 
 // Handle GET requests to the root path

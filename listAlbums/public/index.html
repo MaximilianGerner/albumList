@@ -34,7 +34,7 @@
 
 <script>
   // Define the URL of your server endpoint that returns JSON data
-  const url = "http://localhost:3000/api/data";
+  const url = "http://localhost:8000/api/data";
 
   var page = 0;
 
@@ -48,6 +48,8 @@
 
   let results = document.getElementById("inputResults").value;
     console.log(results);
+
+    console.log(url + "?page=" + page + "&results=" + results + "&orderBy=" + document.getElementById("orderBy").value + "&orderDir=" + document.getElementById("orderDir").value);
 
   // Use the fetch API to make a GET request to the URL
   fetch(url + "?page=" + page + "&results=" + results + "&orderBy=" + document.getElementById("orderBy").value + "&orderDir=" + document.getElementById("orderDir").value)

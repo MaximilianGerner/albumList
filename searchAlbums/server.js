@@ -18,7 +18,7 @@ const pool = mariadb.createPool({
     user: 'root',
     password: '4567',
     connectionLimit: 5,
-    database: 'AlbumListPlayground'
+    database: 'AlbumList'
 });
 
 const conn = pool.getConnection();
@@ -100,7 +100,7 @@ async function insertAlbum(json) {
                 for (let i = 0; i < Object.keys(json.artists).length; i++) {
                     let sql = "SELECT artistName, id FROM artist WHERE artistName = '" + json.artists[i] + "';";
 
-                    let select = await conn.then(function (conn) {
+                    let select = conn.then(function (conn) {
                         return conn.query(sql)
                     });
 
@@ -108,7 +108,7 @@ async function insertAlbum(json) {
                     if (select.length == 0) {
                         let sql = "INSERT artistName FROM artist WHERE artistName = '" + json.artists[i] + "';";
         
-                        let select = await conn.then(function (conn) {
+                        let select = conn.then(function (conn) {
                             return conn.query(sql)
                         });
                     }
