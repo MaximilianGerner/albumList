@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>List Albums</title>
+</head>
+<body>
+
+
+  <select id="orderBy">
+    <option value="averageRating">Fair Average</option>
+    <option value="releaseDate">Release Date</option>
+    <option value="albumName">Album Name</option>
+    <option value="artists">Artist Name</option>
+    <option value="controversy">Controversy</option>
+  </select>
+
+  <select id="orderDir">
+    <option value="ASC">Ascending</option>
+    <option value="DESC">Descending</option>
+  </select>
+
+  <input id="inputResults" type="number" value="25">
+
+  <button onclick="localhost:8000?page=<%= page-1 %>"><</button>
+  <button onclick="location.href='localhost:8000?page=<%= page+1 %>;'">></button>
+  <button onclick="getResults()">Apply</button>
+
+<ul id="data">
+  <% items.forEach(function(item) { %>
+            <li>
+              <h3><%= item.albumName %></h3>
+              
+              <h4><%= item.artists %></h4>
+
+              <p>
+                <% if (!item.averageRating) { %>
+                  <%= item.averageRating %>
+                <% } else { %>
+                  -
+                <% } %>
+              </p>
+
+              <img src=<%= item.coverLink %>>
+            </li>
+        <% });%>
+</ul>
+
+<script> 
+  var page = <%= page %>;
+</script>
+
+<script src=/script.js></script>
+
+</body>
+</html>
+
+
+
+

@@ -1,6 +1,8 @@
 // Import the express module
 const express = require('express');
 
+
+// sql
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
     host: 'localhost',
@@ -13,6 +15,9 @@ const pool = mariadb.createPool({
 const conn = pool.getConnection();
 
 
+
+
+
 // Create an express app
 const app = express();
 
@@ -21,9 +26,29 @@ const port = 8000;
 
 app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-    // Send the HTML file as a response
-    res.sendFile("public/index.html", {root: __dirname});
+
+// ejs
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/public');
+
+
+
+app.get("", (req, res) => {
+
+    let page = 1;
+
+    if (req.query.page)
+    {
+        page = req.query.page;
+    }
+
+    const items = getQuery(page, 30, "releaseDate", "ASC");
+
+    items.then(function(items){
+         res.render("index", {page, items});
+    });
+
+    
 });
 
 // Handle GET requests to the root path
@@ -50,10 +75,10 @@ async function getQuery(page, results, orderBy, orderDir) {
 
     try {
 
-        let sql = "(SELECT album.id, albumName, GROUP_CONCAT(artistName SEPARATOR ', ') AS artists, coverLink, averageRating " +
+        let sql = "(SELECT album.id, albumName, GROUP_CONCAT(artistName SEPARATOR ', ') AS artists, coverLink, averageRating, releaseDate " +
             "FROM album JOIN albumToArtist ON album.id = albumId " +
             "JOIN artist ON artist.id = artistId " +
-            "GROUP BY albumId ORDER BY releaseDate) ORDER BY " + orderBy + " " + orderDir + " LIMIT " + (page * results) + ", " + results + ";"
+            "GROUP BY albumId ORDER BY releaseDate) ORDER BY " + orderBy + " " + orderDir + " LIMIT " + ((page-1) * results) + ", " + results + ";"
 
         return await conn.then(function (conn) {
             return conn.query(sql)
