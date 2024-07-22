@@ -29,10 +29,10 @@ import sys
 try:
     conn = mariadb.connect(
         user="root",
-        password="3589",
+        password="4567",
         host="127.0.0.1",
         port=3306,
-        database="AlbumListPlayground"
+        database="AlbumList"
     )
 except mariadb.Error as e:
     print(f"Error connecting to MariaDB Platform: {e}")
@@ -41,28 +41,28 @@ except mariadb.Error as e:
 # Get Cursor
 cur = conn.cursor()
 
-amOfAlbums = 1975;
+amOfAlbums = 2065;
 
-with open('data.tsv', mode='r') as file:
+with open('/home/max/projects/albumList/sql/data.tsv', mode='r') as file:
     csvFile = csv.reader(file, delimiter="\t")
 
     cur.execute("DELETE FROM recommend")
-    cur.execute("ALTER TABLE recommend AUTO_INCREMENT = 1")
+    cur.execute("ALTER TABLE recommend AUTO_INCREMENT = 0")
     cur.execute("DELETE FROM remember")
-    cur.execute("ALTER TABLE remember AUTO_INCREMENT = 1")
+    cur.execute("ALTER TABLE remember AUTO_INCREMENT = 0")
     cur.execute("DELETE FROM rating")
-    cur.execute("ALTER TABLE rating AUTO_INCREMENT = 1")
+    cur.execute("ALTER TABLE rating AUTO_INCREMENT = 0")
     cur.execute("DELETE FROM albumToArtist")
-    cur.execute("ALTER TABLE albumToArtist AUTO_INCREMENT = 1")
+    cur.execute("ALTER TABLE albumToArtist AUTO_INCREMENT = 0")
     cur.execute("DELETE FROM artist")
-    cur.execute("ALTER TABLE artist AUTO_INCREMENT = 1")
+    cur.execute("ALTER TABLE artist AUTO_INCREMENT = 0")
     cur.execute("DELETE FROM album")
-    cur.execute("ALTER TABLE album AUTO_INCREMENT = 1")
+    cur.execute("ALTER TABLE album AUTO_INCREMENT = 0")
 
 
     for i, line in enumerate(csvFile):
         if i != 0:
-            if i > amOfAlbums:
+            if i >= amOfAlbums:
                 break
 
             if line[22] == "-":
@@ -91,7 +91,7 @@ with open('data.tsv', mode='r') as file:
 
         if i != 0:
 
-            if i > amOfAlbums:
+            if i >= amOfAlbums:
                 break
 
             for j in range(8):
@@ -101,10 +101,10 @@ with open('data.tsv', mode='r') as file:
 
                 elif line[4 + (j * 2)] == "!!!":
                     print("INSERT INTO recommend (recommenderId, recommendeeId, albumId)"
-                          "VALUES (%s, %s, %s)", (0, j + 1, line[29]))
+                          "VALUES (%s, %s, %s)", (1, j + 1, line[29]))
 
                     cur.execute("INSERT INTO recommend (recommenderId, recommendeeId, albumId)"
-                                "VALUES (%s, %s, %s)", (0, j + 1, line[29]))
+                                "VALUES (%s, %s, %s)", (1, j + 1, line[29]))
 
                 elif line[4 + (j * 2)] == "!" or line[4 + (j * 2)] == "?":
                     print("INSERT INTO remember (userId, albumId)"
@@ -131,7 +131,7 @@ with open('data.tsv', mode='r') as file:
         if i == 0: 
             continue
 
-        elif i > amOfAlbums:
+        elif i >= amOfAlbums:
             break
 
         artists = line[31].split("\\")
@@ -145,7 +145,7 @@ with open('data.tsv', mode='r') as file:
 
             response = cur.fetchall()
 
-            if len(response) is 0:
+            if len(response) == 0:
                 print("INSERT INTO artist (artistName) VALUES (%s)", (a,))
                 cur.execute("INSERT INTO artist (artistName) VALUES (%s)", (a,))
                 conn.commit()
