@@ -101,24 +101,24 @@ with open('data.tsv', mode='r') as file:
 
                 elif line[4 + (j * 2)] == "!!!":
                     print("INSERT INTO recommend (recommenderId, recommendeeId, albumId)"
-                          "VALUES (%s, %s, %s)", (1, j + 1, line[29]))
+                          "VALUES (%s, %s, %s)", (1, j + 2, line[29]))
 
                     cur.execute("INSERT INTO recommend (recommenderId, recommendeeId, albumId)"
-                                "VALUES (%s, %s, %s)", (1, j + 1, line[29]))
+                                "VALUES (%s, %s, %s)", (1, j + 2, line[29]))
 
                 elif line[4 + (j * 2)] == "!" or line[4 + (j * 2)] == "?":
                     print("INSERT INTO remember (userId, albumId)"
-                          "VALUES (%s, %s)", (j + 1, line[29]))
+                          "VALUES (%s, %s)", (j + 2, line[29]))
 
                     cur.execute("INSERT INTO remember (userId, albumId)"
-                                "VALUES (%s, %s)", (j + 1, line[29]))
+                                "VALUES (%s, %s)", (j + 2, line[29]))
 
                 else:
                     print("INSERT INTO rating (userId, albumId, score, dateOfRating)"
-                          "VALUES (%s, %s, %s, %s)", (j + 1, line[29], line[4 + (j * 2)], "2024-02-14"))
+                          "VALUES (%s, %s, %s, %s)", (j + 2, line[29], line[4 + (j * 2)], "2024-02-14"))
 
                     cur.execute("INSERT INTO rating (userId, albumId, score, dateOfRating)"
-                                "VALUES (%s, %s, %s, %s)", (j + 1, line[29], line[4 + (j * 2)], "2024-02-14"))
+                                "VALUES (%s, %s, %s, %s)", (j + 2, line[29], line[4 + (j * 2)], "2024-02-14"))
 
                 conn.commit()
 

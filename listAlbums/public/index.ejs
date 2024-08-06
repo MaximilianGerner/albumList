@@ -24,34 +24,46 @@
   </select>
 
   <input id="inputResults" type="number" value="25">
-
-  <button onclick="localhost:8000?page=<%= page-1 %>"><</button>
-  <button onclick="location.href='localhost:8000?page=<%= page+1 %>;'">></button>
+  
+  <% if (page > 1) { %>
+    <a href="http://localhost:8000?page=<%= (page - 1) %>"><</a>
+  <% } %>
+  <%= page %>
+  <a href="http://localhost:8000?page=<%= (++page) %>">></a>
   <button onclick="getResults()">Apply</button>
 
 <ul id="data">
   <% items.forEach(function(item) { %>
             <li>
+            <a href="album/<%= item.id %>">
               <h3><%= item.albumName %></h3>
               
               <h4><%= item.artists %></h4>
 
               <p>
-                <% if (!item.averageRating) { %>
+                <% if (item.averageRating) { %>
                   <%= item.averageRating %>
                 <% } else { %>
-                  -
+                  NA
                 <% } %>
               </p>
 
-              <img src=<%= item.coverLink %>>
+              <img src=<%= item.coverLink %> , width=100px, height=100px >
+
+              
+              <p><%= (new Date(item.releaseDate)).toLocaleDateString("de-DE") %></p>
+              <p><%= item.genres %></p>
+              </a>
             </li>
         <% });%>
 </ul>
 
-<script> 
-  var page = <%= page %>;
-</script>
+  <% if (page > 1) { %>
+    <a href="http://localhost:8000?page=<%= (page - 1) %>"><</a>
+  <% } %>
+  <%= page %>
+  <a href="http://localhost:8000?page=<%= (++page) %>">></a>
+
 
 <script src=/script.js></script>
 

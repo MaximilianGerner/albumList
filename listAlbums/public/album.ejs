@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Album List - <%= albumData[0].albumName %></title>
+</head>
+<body>
+              <h2>Album</h2> 
+
+              <h3><%= albumData[0].albumName %></h3>
+              
+              <h4>by <%= albumData[0].artists %></h4>
+
+              <p>
+                <% if (albumData[0].averageRating) { %>
+                  <%= albumData[0].averageRating %>
+                <% } else { %>
+                  Not enough data for average rating
+                <% } %>
+              </p>
+
+              <img src=<%= albumData[0].coverLink %>>
+              
+              <p>Release Date: <%= (new Date(albumData[0].releaseDate)).toLocaleDateString("de-DE") %></p>
+              <p>Artist genres: <%= albumData[0].genres %></p>
+              <p>Controversy: 
+              <% if (albumData[0].controversy != null) { %>
+                <%= albumData[0].controversy * 100 %> %
+              <% } else { %>
+                Not enough data for controversy
+              <% } %>
+
+<button>Rate</button>
+<button>Remember</button>
+<button>Recommend</button>
+
+
+<h3>Ratings:</h3>
+<ul id="ratings">
+  <% ratings.forEach(function(rating) { %>
+    <li>
+      <%= rating.userName %>: 
+      <%= rating.score %> on <%= (new Date(rating.dateOfRating)).toLocaleDateString("de-DE") %>
+    </li>
+  <% });%>
+</ul>
+
+
+
+<h3>Remembered:</h3>
+<ul id="remembereds">
+  <% remembereds.forEach(function(remembered) { %>
+    <li>
+      <%= remembered.userName %>
+    </li>
+  <% });%>
+</ul>
+
+
+
+<h3>Recommends:</h3>
+<ul id="recommends">
+  <% recommends.forEach(function(remember) { %>
+    <li>
+      Recommended to <%= recommends.recommendeeName %>
+    </li>
+  <% });%>
+</ul>
+
+<script src=/script.js></script>
+
+</body>
+</html>
+

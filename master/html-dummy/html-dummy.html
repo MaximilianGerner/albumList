@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:3000/ -->
+<html lang="en" data-lt-installed="true" class=" gdikeyubel idc0_350"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Basic HTML Template</title>
+</head>
+<body>
+
+
+  <select id="orderBy">
+    <option value="averageRating">Fair Average</option>
+    <option value="releaseDate">Release Date</option>
+    <option value="albumName">Album Name</option>
+    <option value="artists">Artist Name</option>
+    <option value="controversy">Controversy</option>
+  </select>
+
+  <select id="orderDir">
+    <option value="ASC">Ascending</option>
+    <option value="DESC">Descending</option>
+  </select>
+
+  <input id="inputResults" type="number" value="25">
+
+  <button onclick="previousPage()">&lt;</button>
+  <button onclick="nextPage()">&gt;</button>
+  <button onclick="getResults()">Apply</button>
+
+<ul id="data"><li><h3>Presenting Billy Murray</h3><h4>Billy Murray</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02a37fdf54f624fd339028bede"></li><li><h3>Presenting Irving Kaufman</h3><h4>Irving Kaufman</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e0225ddd45ac1e652deaec7bbce"></li><li><h3>La Leggenda di Beniamino Gigli</h3><h4>Beniamino Gigli</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e021c0b294f820943cb7921cee9"></li><li><h3>Bird &amp; Pres at JAPT (Jazz At The Philharmonic)</h3><h4>Charlie Parker, Lester Young</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e0267a79eba0b14b678d4631abe"></li><li><h3>Bird &amp; Diz</h3><h4>Charlie Parker</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02576529348709f256ed492dc6"></li><li><h3>Smetana: Ma Vlast</h3><h4>Bedřich Smetana, Chicago Symphony Orchestra, Rafael Kubelík</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02f4503e03cac794e2f17cfd2a"></li><li><h3>Puccini: Tosca</h3><h4>Giacomo Puccini, Maria Callas, Orchestra Del Teatro Alla Scala, Milano, Victor de Sabata</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e028d8c8035d79a33a5148f8f90"></li><li><h3>Callas sings Operatic Arias by Puccini - Callas Remastered</h3><h4>Giacomo Puccini, Maria Callas, Philharmonia Orchestra, Tullio Serafin</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02bcbab1fd6bd647d695bb127e"></li><li><h3>At Jazz At The Philharmonic</h3><h4>Billie Holiday</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02aed2c4e5297f7c51d2d67542"></li><li><h3>In the Wee Small Hours</h3><h4>Frank Sinatra</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02d4f8a582c0c3a3d67f395c6d"></li><li><h3>Puccini: Madama Butterfly</h3><h4>Giacomo Puccini, Maria Callas, Orchestra Del Teatro Alla Scala, Milano, Herbert von Karajan</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02057638c4690b538f0342a723"></li><li><h3>Concert By The Sea</h3><h4>Erroll Garner</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02de58033b731d9d45e8657c0a"></li><li><h3>Diz And Getz</h3><h4>Dizzy Gillespie, Stan Getz</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e0213a22c1eb37dd54f2c46e3ac"></li><li><h3>Chet Baker Sings</h3><h4>Chet Baker</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02bcaf6f097b310e20504f2de0"></li><li><h3>Fontessa</h3><h4>The Modern Jazz Quartet</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02cae56693b969805d61cdc900"></li><li><h3>Birth Of The Cool</h3><h4>Miles Davis</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02f44518f7aea6cc64ecca8448"></li><li><h3>Sonny Side Up</h3><h4>Sonny Rollins, Sonny Stitt, Dizzy Gillespie</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02649ac42ad238ba36f9d1b167"></li><li><h3>Brilliant Corners</h3><h4>Thelonious Monk</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e026f955e40e9783400a004ae55"></li><li><h3>West Side Story (Original Broadway Cast Recording)</h3><h4>Leonard Bernstein, Original Broadway Cast of West Side Story</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02b4328d3686bc947bb15a5e11"></li><li><h3>T.S. Eliot Reading Poems and Chorus - The 1955 London Caedmon Readings</h3><h4>T. S. Eliot</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e0279e7cc773cd8ba4a042a7103"></li><li><h3>Westeuropa zwischen Barock und Rokoko: Serie B. Am Hofe Ludwigs XIV (Mono Version)</h3><h4>Charles Mouton, Walter Gerwig</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e029a474ea6271ebe89f994d501"></li><li><h3>Round About Midnight</h3><h4>Miles Davis</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02cb6f92683ff9ad65f27a3f9f"></li><li><h3>Saxophone Colossus</h3><h4>Sonny Rollins</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e0219d9b2d8f296f97d144b0523"></li><li><h3>The Best Of Muddy Waters</h3><h4>Muddy Waters</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02f961bcc3e202a14cafe8ee7c"></li><li><h3>At Mister Kelly's</h3><h4>Sarah Vaughan</h4><p>-</p><img src="./html-dummy_files/ab67616d00001e02dd2d50ea0c0f3e840d903d41"></li></ul>
+
+
+<script>
+  // Define the URL of your server endpoint that returns JSON data
+  const url = "http://localhost:3000/api/data";
+
+  var page = 0;
+
+  getResults();
+
+
+
+
+  function getResults(){
+
+
+  let results = document.getElementById("inputResults").value;
+    console.log(results);
+
+  // Use the fetch API to make a GET request to the URL
+  fetch(url + "?page=" + page + "&results=" + results + "&orderBy=" + document.getElementById("orderBy").value + "&orderDir=" + document.getElementById("orderDir").value)
+    .then(response => response.json()) // Parse the response as JSON
+    .then(data => {
+      // Do something with the data, such as displaying it on the page
+      console.log(data); // For debugging purposes
+      let ul = document.getElementById("data");
+
+      ul.innerHTML = "";
+
+      for(let i = 0; i < Object.keys(data).length; i++){
+        let li = document.createElement("li");
+
+        let albumName = document.createElement("h3");
+        albumName.innerHTML = data[i].albumName;
+        li.appendChild(albumName);
+
+        let artistName = document.createElement("h4");
+        artistName.innerHTML = data[i].artists;
+        li.appendChild(artistName);
+
+        let averageRating = document.createElement("p");
+        if(data[i].averageRating){
+          averageRating.innerHTML = data[i].averageRating;
+        }
+        else{
+          averageRating.innerHTML = "-";
+        }
+        li.appendChild(averageRating);
+
+        let coverImg = document.createElement("img");
+        coverImg.setAttribute("src", data[i].coverLink);
+        li.appendChild(coverImg);
+
+        ul.append(li);
+      }
+    })
+    .catch(error => {
+      // Handle any errors, such as network or server issues
+      console.error(error);
+      alert("An error ocurred!");
+    });
+  }
+
+
+
+
+    function nextPage(){
+      page++;
+      getResults();
+    }
+
+    function previousPage(){
+      if(page > 0){
+        page--;
+        getResults();
+      }
+    }
+</script>
+
+
+
+
+
+
+</body><auto-scroll><template shadowrootmode="closed"><div style="transform: translateZ(0px); display: none; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 2147483647; background-repeat: no-repeat;"></div></template></auto-scroll></html>

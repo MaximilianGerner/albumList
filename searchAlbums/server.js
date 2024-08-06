@@ -67,6 +67,9 @@ app.post("/api/insertAlbum", async (req, res) => {
 async function insertAlbum(json) {
     
     try {
+
+
+        console.log(json);
         
         // Album
         
@@ -130,8 +133,8 @@ async function insertAlbum(json) {
 }
 
 // Start the server on port 3000
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
+app.listen(8000, () => {
+    console.log("Server is running on port 8000");
 });
 
 
